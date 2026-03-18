@@ -1,0 +1,41 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Syntagmax",
+    "patterns": [
+        { "include": "#keywords" },
+        { "include": "#strings" },
+        { "include": "#comments" }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.syntagmax",
+                    "match": "\\b(artifact|attribute|is)\\b"
+                },
+                {
+                    "name": "keyword.other.syntagmax",
+                    "match": "\\b(mandatory|optional)\\b"
+                },
+                {
+                    "name": "support.type.syntagmax",
+                    "match": "\\b(string|integer|boolean|enum)\\b"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.syntagmax",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                { "name": "constant.character.escape.syntagmax", "match": "\\\\." }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                { "name": "comment.line.number-sign.syntagmax", "match": "#.*$" }
+            ]
+        }
+    },
+    "scopeName": "source.syntagmax"
+}

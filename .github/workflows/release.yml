@@ -13,26 +13,22 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: syntagmax-vscode/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: |
-          cd syntagmax-vscode
-          npm install
+        run: npm install
 
       - name: Compile and Package
-        run: |
-          cd syntagmax-vscode
-          npx @vscode/vsce package --out syntagmax.vsix
+        run: npx @vscode/vsce package --out syntagmax.vsix
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: syntagmax-vscode/syntagmax.vsix
+          files: syntagmax.vsix
           generate_release_notes: true
           draft: false
           prerelease: false

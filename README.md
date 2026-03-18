@@ -16,13 +16,6 @@ VS Code support for the Syntagmax DSL, providing syntax highlighting and languag
   pip install pygls lark
   ```
 
-## Installation
-
-1. Clone the repository.
-2. Open the `syntagmax-vscode` folder in VS Code.
-3. Run `npm install` and `npm run compile`.
-4. Press `F5` to launch the extension in a new window.
-
 ## License
 
 MIT

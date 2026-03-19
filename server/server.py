@@ -29,7 +29,7 @@ GRAMMAR = r"""
 start: (artifact | trace | _NL)+
 
 artifact: ARTIFACT name ":" _NL _INDENT (rule | _NL)* _DEDENT
-rule: "attribute" name "is" PRESENCE type _NL
+rule: "attribute" name "is" PRESENCE [MULTIPLE] type _NL
 
 trace: "trace" "from" name "to" target_list "is" PRESENCE _NL
 target_list: name ("or" name)*
@@ -37,9 +37,13 @@ target_list: name ("or" name)*
 ?type: "string" -> type_string
      | "integer" -> type_integer
      | "boolean" -> type_boolean
+     | "reference" to_parent? -> type_reference
      | "enum" "[" value ("," value)* "]" -> type_enum
 
+to_parent: "to" "parent"
+
 ARTIFACT: "artifact"
+MULTIPLE: "multiple"
 ?name: WORD
 PRESENCE: "mandatory" | "optional"
 ?value: ESCAPED_STRING | WORD
@@ -99,10 +103,13 @@ def completions(ls, params: CompletionParams):
         CompletionItem(label="attribute"),
         CompletionItem(label="mandatory"),
         CompletionItem(label="optional"),
+        CompletionItem(label="multiple"),
         CompletionItem(label="string"),
         CompletionItem(label="integer"),
         CompletionItem(label="boolean"),
+        CompletionItem(label="reference"),
         CompletionItem(label="enum"),
+        CompletionItem(label="parent"),
         CompletionItem(label="trace"),
         CompletionItem(label="from"),
         CompletionItem(label="to"),

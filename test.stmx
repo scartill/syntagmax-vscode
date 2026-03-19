@@ -1,3 +1,7 @@
+artifact SRC:
+    attribute id is mandatory string
+    attribute title is mandatory string
+
 artifact REQ:
     attribute id is mandatory string
     attribute contents is mandatory string
@@ -5,6 +9,9 @@ artifact REQ:
     attribute pid is optional string
     attribute input is optional string
     attribute output is optional string
+    attribute tags is optional multiple string
+    attribute parent is optional reference to parent
+    attribute source is mandatory reference
 
 trace from SRC to REQ is mandatory
 trace from TEST to REQ or SRC is mandatory

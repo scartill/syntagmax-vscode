@@ -15,11 +15,15 @@
                 },
                 {
                     "name": "keyword.other.syntagmax",
-                    "match": "\\b(mandatory|optional)\\b"
+                    "match": "\\b(mandatory|optional|multiple)\\b"
                 },
                 {
                     "name": "support.type.syntagmax",
-                    "match": "\\b(string|integer|boolean|enum)\\b"
+                    "match": "\\b(string|integer|boolean|reference|enum)\\b"
+                },
+                {
+                    "name": "keyword.control.syntagmax",
+                    "match": "\\b(parent)\\b"
                 }
             ]
         },

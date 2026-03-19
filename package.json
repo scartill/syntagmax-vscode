@@ -3,7 +3,7 @@
     "displayName": "Syntagmax",
     "description": "VS Code extension for Syntagmax DSL",
     "repository": "https://github.com/scartill/syntagmax-vscode",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "engines": {
         "vscode": "^1.90.0"
     },

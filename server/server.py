@@ -13,27 +13,54 @@ from lsprotocol.types import (
     DidChangeTextDocumentParams,
 )
 from lark import Lark
+from lark.indenter import Indenter
 
 server = LanguageServer("syntagmax-server", "v0.1")
 
-# Re-use existing grammar
+class SyntagmaxIndenter(Indenter):
+    NL_type = "_NL"
+    OPEN_PAREN_types = []
+    CLOSE_PAREN_types = []
+    INDENT_type = "_INDENT"
+    DEDENT_type = "_DEDENT"
+    tab_len = 4
+
 GRAMMAR = r"""
-start: artifact+
-artifact: "artifact" name ":" _NL _INDENT rule+ _DEDENT
-rule: "attribute" name "is" presence type _NL
-?type: "string" | "integer" | "boolean" | "enum" "[" value ("," value)* "]"
+start: (artifact | trace | _NL)+
+
+artifact: ARTIFACT name ":" _NL _INDENT (rule | _NL)* _DEDENT
+rule: "attribute" name "is" PRESENCE type _NL
+
+trace: "trace" "from" name "to" target_list "is" PRESENCE _NL
+target_list: name ("or" name)*
+
+?type: "string" -> type_string
+     | "integer" -> type_integer
+     | "boolean" -> type_boolean
+     | "enum" "[" value ("," value)* "]" -> type_enum
+
+ARTIFACT: "artifact"
 ?name: WORD
-?presence: "mandatory" | "optional"
+PRESENCE: "mandatory" | "optional"
 ?value: ESCAPED_STRING | WORD
+
 %import common.WORD
 %import common.ESCAPED_STRING
 %import common.WS_INLINE
+%import common.SH_COMMENT
 %ignore WS_INLINE
+%ignore SH_COMMENT
+
 %declare _INDENT _DEDENT
 _NL: /(\r?\n[\t ]*)+/
 """
 
-parser = Lark(GRAMMAR, parser="lalr", propagate_positions=True)
+parser = Lark(
+    GRAMMAR,
+    parser="lalr",
+    postlex=SyntagmaxIndenter(),
+    propagate_positions=True
+)
 
 
 @server.feature(TEXT_DOCUMENT_DID_OPEN)
@@ -76,6 +103,10 @@ def completions(ls, params: CompletionParams):
         CompletionItem(label="integer"),
         CompletionItem(label="boolean"),
         CompletionItem(label="enum"),
+        CompletionItem(label="trace"),
+        CompletionItem(label="from"),
+        CompletionItem(label="to"),
+        CompletionItem(label="or"),
     ]
     return CompletionList(is_incomplete=False, items=items)
 

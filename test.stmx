@@ -15,4 +15,4 @@ artifact REQ:
 
 trace from SRC to REQ is mandatory
 trace from TEST to REQ or SRC is mandatory
-trace from TEST to REQ or SRC is mandatory via git
+trace from TEST to REQ or SRC is mandatory via commit

@@ -17,6 +17,7 @@ from lark.indenter import Indenter
 
 server = LanguageServer("syntagmax-server", "v0.1")
 
+
 class SyntagmaxIndenter(Indenter):
     NL_type = "_NL"
     OPEN_PAREN_types = []
@@ -24,6 +25,7 @@ class SyntagmaxIndenter(Indenter):
     INDENT_type = "_INDENT"
     DEDENT_type = "_DEDENT"
     tab_len = 4
+
 
 GRAMMAR = r"""
 start: (artifact | trace | _NL)+
@@ -46,7 +48,7 @@ ARTIFACT: "artifact"
 MULTIPLE: "multiple"
 ?name: WORD
 PRESENCE: "mandatory" | "optional"
-TRACE_MODE: "git" | "timestamp"
+TRACE_MODE: "commit" | "timestamp"
 ?value: ESCAPED_STRING | WORD
 
 %import common.WORD
@@ -61,10 +63,7 @@ _NL: /(\r?\n[\t ]*)+/
 """
 
 parser = Lark(
-    GRAMMAR,
-    parser="lalr",
-    postlex=SyntagmaxIndenter(),
-    propagate_positions=True
+    GRAMMAR, parser="lalr", postlex=SyntagmaxIndenter(), propagate_positions=True
 )
 
 
@@ -116,7 +115,7 @@ def completions(ls, params: CompletionParams):
         CompletionItem(label="to"),
         CompletionItem(label="or"),
         CompletionItem(label="via"),
-        CompletionItem(label="git"),
+        CompletionItem(label="commit"),
         CompletionItem(label="timestamp"),
     ]
     return CompletionList(is_incomplete=False, items=items)
